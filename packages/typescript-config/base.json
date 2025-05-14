@@ -1,19 +1,46 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
   "compilerOptions": {
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
     "declaration": true,
-    "declarationMap": true,
-    "esModuleInterop": true,
-    "incremental": false,
-    "isolatedModules": true,
-    "lib": ["es2022", "DOM", "DOM.Iterable"],
-    "module": "NodeNext",
-    "moduleDetection": "force",
-    "moduleResolution": "NodeNext",
-    "noUncheckedIndexedAccess": true,
-    "resolveJsonModule": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "ES2023",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "baseUrl": "./",
+    "incremental": true,
     "skipLibCheck": true,
-    "strict": true,
-    "target": "ES2022"
-  }
+    "strictNullChecks": true,
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitAny": false,
+    "strictBindCallApply": false,
+    "noFallthroughCasesInSwitch": false,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "paths": {
+      "@providers/*": [
+        "src/providers/*"
+      ],
+      "@constants/*": [
+        "src/commons/constants/*"
+      ],
+      "@filters/*": [
+        "src/commons/filters/*"
+      ],
+      "@interfaces/*": [
+        "src/commons/interfaces/*"
+      ],
+      "@modules/*": [
+        "src/modules/*"
+      ]
+    }
+  },
+  "include": [
+    "src"
+  ]
 }
