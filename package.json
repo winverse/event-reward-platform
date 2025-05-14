@@ -1,6 +1,7 @@
 {
-  "name": "maple-story-reward",
+  "name": "event-reward-platform",
   "private": true,
+  "author": "public.winverse@gmail.com",
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
@@ -14,7 +15,7 @@
     "typescript": "5.8.2"
   },
   "engines": {
-    "node": ">=18"
+    "node": "18"
   },
   "packageManager": "npm@10.8.2",
   "workspaces": [
