@@ -10,7 +10,7 @@ const __dirname = dirname(__filename);
 
 export default tseslint.config(
   {
-    ignores: ["eslint.config.mjs"],
+    ignores: ["eslint.config.js"],
   },
   eslint.configs.recommended,
   ...tseslint.configs.recommendedTypeChecked,
