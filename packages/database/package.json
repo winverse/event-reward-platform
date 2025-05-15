@@ -1,0 +1,25 @@
+{
+  "name": "@packages/database",
+  "version": "0.0.1",
+  "type": "module",
+  "exports": {
+    "mongo-rs": {
+      "default": "./dist/event_platform_mongo/index.mjs",
+      "types": "./dist/event_platform_mongo/index.d.ts"
+    }
+  },
+  "scripts": {
+    "copy:env": "tsx ./scripts/copy-env.ts"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.8.0"
+  },
+  "devDependencies": {
+    "@packages/eslint-config": "workspace:*",
+    "@packages/typescript-config": "workspace:*",
+    "@types/node": "^20.17.47",
+    "prisma": "^6.8.0",
+    "tsx": "^4.19.4",
+    "typescript": "^5.1.3"
+  }
+}
