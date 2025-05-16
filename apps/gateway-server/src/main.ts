@@ -6,6 +6,8 @@ import {
 import { VersioningType } from '@nestjs/common';
 import { AppModule } from './app.module.js';
 import * as process from 'node:process';
+import { EventConditions } from '@packages/interface';
+
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(

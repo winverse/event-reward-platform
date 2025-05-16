@@ -253,6 +253,9 @@ importers:
       '@packages/env-config':
         specifier: workspace:*
         version: link:../../packages/env-config
+      '@packages/interface':
+        specifier: workspace:*
+        version: link:../../packages/interface
       reflect-metadata:
         specifier: ^0.2.0
         version: 0.2.2
@@ -427,6 +430,18 @@ importers:
       typescript-eslint:
         specifier: ^8.32.0
         version: 8.32.1(eslint@9.26.0(jiti@2.4.2))(typescript@5.8.3)
+
+  packages/interface:
+    devDependencies:
+      '@packages/eslint-config':
+        specifier: workspace:*
+        version: link:../eslint-config
+      '@packages/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
+      typescript:
+        specifier: ^5.1.3
+        version: 5.8.3
 
   packages/swc-config: {}
 
