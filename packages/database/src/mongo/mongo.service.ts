@@ -4,12 +4,11 @@ import {
   OnModuleDestroy,
   OnModuleInit,
 } from '@nestjs/common';
-
 import { PrismaClient } from '@prisma/generated/event-platform-mongo';
 import { ConfigService } from '@packages/env-config';
 
 @Injectable()
-export class EventPlatformMongoService
+export class MongoService
   extends PrismaClient
   implements OnModuleInit, OnModuleDestroy
 {

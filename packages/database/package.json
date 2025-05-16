@@ -3,15 +3,17 @@
   "version": "0.0.1",
   "type": "module",
   "exports": {
-    "mongo-rs": {
-      "default": "./dist/event_platform_mongo/index.mjs",
-      "types": "./dist/event_platform_mongo/index.d.ts"
+    "./mongo": {
+      "default": "./dist/mongo/index.js",
+      "types": "./dist/mongo/index.d.ts"
     }
   },
   "scripts": {
-    "build": "npx swc ./src -d ./dist --config-file ../swc-config/.swcrc -s --strip-leading-paths",
     "prisma:generate": "pnpm env:copy && tsx ./scripts/prisma-generate.ts",
-    "env:copy": "tsx ./scripts/env-copy.ts"
+    "env:copy": "tsx ./scripts/env-copy.ts",
+    "build": "tsc -p tsconfig.build.json",
+    "lint": "eslint . --ext .ts --fix",
+    "check-types": "tsc --noEmit"
   },
   "dependencies": {
     "@nestjs/common": "^11.1.1",

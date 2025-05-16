@@ -6,7 +6,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "npx swc ./src -d ./dist --config-file ../swc-config/.swcrc -s --strip-leading-paths",
+    "build": "tsc -p tsconfig.json",
     "lint": "eslint . --ext .ts --fix",
     "check-types": "tsc --noEmit"
   },
