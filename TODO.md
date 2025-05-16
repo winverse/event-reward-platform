@@ -9,8 +9,8 @@
 - [x] 타입 검사 추가 (tsc 사용)
 - [x] `pnpm lint`, `pnpm format`, `pnpm check-types`, `pnpm dev` 실행 확인
 - [x] Express -> Fastify로 변경 및 REST한 API 설계
-- [X] `.env` 파일 처리 및 설정
-- [X] Docker-Compose를 이용한 MongoDB 환경 구성 및 로컬 데이터 연동
+- [x] `.env` 파일 처리 및 설정
+- [x] Docker-Compose를 이용한 MongoDB 환경 구성 및 로컬 데이터 연동
 - [ ] Database package 생성 (공유 DB 모듈/설정)
 
 ## 2. Core Authentication & Authorization (인증 및 인가 핵심 기능)

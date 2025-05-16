@@ -1,1 +1,2 @@
-./data/event_platform_mongo
+./data/*
+!./data/.gitkeep

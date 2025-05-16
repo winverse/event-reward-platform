@@ -1,6 +1,6 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "../node_modules/@prisma/client"
+  output = "../node_modules/@prisma/generated/event-platform-mongo"
 }
 
 datasource db {
@@ -19,8 +19,6 @@ model User {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  @@index([email, username])
 }
 
 enum UserRole {
@@ -34,7 +32,7 @@ model Event {
   id          String      @id @default(auto()) @map("_id") @db.ObjectId
   name        String
   description String?
-  eventType   EventType   @default(GENERIC)
+  eventType EventType @default(DAILY_LOGIN)
   conditions  Json?
   startDate   DateTime
   endDate     DateTime
@@ -53,10 +51,9 @@ model Event {
 }
 
 enum EventType {
-  GENERIC // 일반 조건형 이벤트 (예: 특정 퀘스트 완료 시 보상)
   DAILY_LOGIN // 단순 일일 출석형 이벤트 (매일 접속만 하면 됨)
   DAILY_TASK // 일일 과제 완료형 이벤트 (예: "데일리 기프트")
-  COLLECTION // 아이템 수집형 이벤트
+  ITEM_COLLECTION // 아이템 수집형 이벤트
   QUIZ // 퀴즈형 이벤트
   CUMULATIVE_LOGIN // 누적 출석 이벤트
 }
@@ -72,17 +69,16 @@ model Reward {
   name     String // 보상 이름
   type     String // 보상 타입 (예: "ITEM", "POINT", "COUPON", "EQUIPMENT")
   quantity Int // 보상 수량
-  imageUrl String?
 
   rewardOrder Int? // 일반 이벤트 보상에는 null, 데일리/누적형 보상에는 1부터 순차적인 값을 부여
 
   eventId String @db.ObjectId
   event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
 
+  UserRewardRequest UserRewardRequest[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  UserRewardRequest UserRewardRequest[]
 }
 
 model UserRewardRequest {
