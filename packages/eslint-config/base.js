@@ -10,9 +10,9 @@ const __dirname = dirname(__filename);
 
 export default tseslint.config(
   {
-    ignores: ["eslint.config.js"],
+    ignores: ['eslint.config.js'],
   },
-  eslint.configs.recommended,
+  ...eslint.configs.recommended,
   ...tseslint.configs.recommendedTypeChecked,
   eslintPluginPrettierRecommended,
   {
@@ -21,7 +21,7 @@ export default tseslint.config(
         ...globals.node,
         ...globals.jest,
       },
-      sourceType: "module",
+      sourceType: 'module',
       parserOptions: {
         projectService: true,
         tsconfigRootDir: __dirname,
@@ -30,12 +30,12 @@ export default tseslint.config(
   },
   {
     rules: {
-      "@typescript-eslint/no-explicit-any": "off",
-      "@typescript-eslint/no-floating-promises": "warn",
-      "@typescript-eslint/no-unsafe-argument": "warn",
-      quotes: ["error", "single"],
-      "@typescript-eslint/no-unused-expressions": [
-        "error",
+      '@typescript-eslint/no-explicit-any': 'off',
+      '@typescript-eslint/no-floating-promises': 'warn',
+      '@typescript-eslint/no-unsafe-argument': 'warn',
+      quotes: ['error', 'single'],
+      '@typescript-eslint/no-unused-expressions': [
+        'error',
         {
           allowShortCircuit: true,
           allowTernary: true,
