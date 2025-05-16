@@ -7,7 +7,7 @@ services:
     ports:
       - "27017:27017"
     volumes:
-      - ./data/event_platform_mongo:/data/db
+      - ./database/mongo:/data/db
     command: [ "--replSet", "rs0", "--bind_ip_all" ]
     healthcheck:
       test: echo 'try { rs.status().members[0].stateStr } catch (err) { rs.initiate({_id:"rs0",members:[{_id:0,host:"mongodb:27017"}]}).ok }' | mongo --host mongodb --quiet | grep -q "PRIMARY"
