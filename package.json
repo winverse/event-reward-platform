@@ -12,13 +12,15 @@
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "check-types": "turbo run check-types",
-    "clean": "npx npkill"
+    "prisma:init": "pnpm --filter=@packages/database prisma:generate",
+    "clean": "shx rm -rf ./node_modules ./apps/*/node_modules ./packages/*/node_modules ./apps/*/dist ./packages/*/dist"
   },
   "devDependencies": {
     "@swc/cli": "^0.7.7",
     "@swc/core": "^1.11.24",
     "cross-env": "^7.0.3",
     "prettier": "^3.5.3",
+    "shx": "^0.4.0",
     "turbo": "^2.5.3",
     "typescript": "5.8.3"
   },

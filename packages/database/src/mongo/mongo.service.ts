@@ -4,8 +4,8 @@ import {
   OnModuleDestroy,
   OnModuleInit,
 } from '@nestjs/common';
-import { PrismaClient } from '@prisma/generated/event-platform-mongo';
 import { ConfigService } from '@packages/env-config';
+import { PrismaClient } from '../generated/mongo/client.js';
 
 @Injectable()
 export class MongoService
@@ -14,7 +14,7 @@ export class MongoService
 {
   private readonly dbUrl: string;
 
-  constructor(private readonly config: ConfigService) {
+  constructor(config: ConfigService) {
     const dbUrl = config.get('db.database_url');
     super({
       datasources: {

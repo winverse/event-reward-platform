@@ -33,4 +33,4 @@ npm-debug.log*
 .idea
 
 # database
-dockers/database/mongo
+dockers/database/event-platform-mongo
