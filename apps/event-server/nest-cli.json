@@ -7,7 +7,7 @@
     "builder": {
       "type": "swc",
       "options": {
-        "swcrcPath": "../../packages/swc-config/base.json"
+        "swcrcPath": "../../packages/swc-config/.swcrc"
       }
     },
     "tsConfigPath": "./tsconfig.json"

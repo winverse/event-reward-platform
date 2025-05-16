@@ -9,7 +9,7 @@
     }
   },
   "scripts": {
-    "build": "npx swc ./src -d ./dist --config-file ../swc-config/base.json -s --strip-leading-paths",
+    "build": "npx swc ./src -d ./dist --config-file ../swc-config/.swcrc -s --strip-leading-paths",
     "prisma:generate": "pnpm env:copy && tsx ./scripts/prisma-generate.ts",
     "env:copy": "tsx ./scripts/env-copy.ts"
   },
@@ -21,8 +21,6 @@
   "devDependencies": {
     "@packages/eslint-config": "workspace:*",
     "@packages/typescript-config": "workspace:*",
-    "@swc/cli": "^0.7.7",
-    "@swc/core": "^1.11.24",
     "@types/node": "^20.17.47",
     "prisma": "^6.8.0",
     "tsx": "^4.19.4",

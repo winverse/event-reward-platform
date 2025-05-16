@@ -345,12 +345,6 @@ importers:
       '@packages/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config
-      '@swc/cli':
-        specifier: ^0.7.7
-        version: 0.7.7(@swc/core@1.11.24)(chokidar@4.0.3)
-      '@swc/core':
-        specifier: ^1.11.24
-        version: 1.11.24
       '@types/node':
         specifier: ^20.17.47
         version: 20.17.47

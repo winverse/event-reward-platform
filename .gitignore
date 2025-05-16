@@ -34,3 +34,6 @@ npm-debug.log*
 
 # Ide
 .idea
+
+# DB data
+./dockers/data/
