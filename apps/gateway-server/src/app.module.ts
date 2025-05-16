@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller.js';
-import { configuration, ConfigModule } from '@packages/env-config';
 import { ConfigModule as NestConfigModule } from '@nestjs/config';
+import { configuration, ConfigModule } from '@packages/env-config';
 
 @Module({
   imports: [NestConfigModule.forRoot({ load: [configuration] }), ConfigModule],

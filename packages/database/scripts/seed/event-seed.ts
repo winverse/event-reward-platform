@@ -1,4 +1,4 @@
-import { EventStatus, EventType } from '../generated/mongo/index.js';
+import { EventStatus, EventType } from '../../src/generated/mongo/client.js';
 
 const generateRandomObjectIdString = (): string => {
   const timestamp = ((new Date().getTime() / 1000) | 0).toString(16);
@@ -299,7 +299,6 @@ export const eventsSeed = [
     endDate: new Date('2025-07-31T23:59:59Z'),
     status: EventStatus.ACTIVE,
     npcName: '메이플 운영자',
-    npcLocation: '20주년 이벤트맵',
     rewardsToCreate: eventThreeRewards.map((reward) => ({
       ...reward,
       externalItemId: generateRandomObjectIdString(),

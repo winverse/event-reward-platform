@@ -9,8 +9,10 @@
     }
   },
   "scripts": {
-    "prisma:generate": "pnpm env:copy && tsx ./scripts/prisma-generate.ts",
-    "env:copy": "tsx ./scripts/env-copy.ts",
+    "db:push": "pnpm copy:env && npx prisma db push",
+    "generate:prisma": "dotenv -e ../../env/.env.development tsx scripts/generate-prisma.ts",
+    "generate:seed": "dotenv -e ../../env/.env.development tsx ./scripts/seed/generate-seed.ts",
+    "copy:env": "tsx scripts/copy-env.ts",
     "build": "tsc -p tsconfig.build.json",
     "lint": "eslint . --ext .ts --fix",
     "check-types": "tsc --noEmit"
@@ -23,7 +25,9 @@
   "devDependencies": {
     "@packages/eslint-config": "workspace:*",
     "@packages/typescript-config": "workspace:*",
+    "@types/bcrypt": "^5.0.2",
     "@types/node": "^20.17.47",
+    "bcrypt": "^6.0.0",
     "prisma": "^6.8.0",
     "tsx": "^4.19.4",
     "typescript": "^5.1.3"

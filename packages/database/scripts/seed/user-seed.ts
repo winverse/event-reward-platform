@@ -1,4 +1,4 @@
-import { UserRole } from '../generated/mongo/index.js';
+import { UserRole } from '../../src/generated/mongo/client.js';
 
 export const usersSeed = [
   {

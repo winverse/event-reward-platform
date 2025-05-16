@@ -12,7 +12,7 @@
 - [x] `.env` 파일 처리 및 설정
 - [x] Docker-Compose를 이용한 MongoDB 환경 구성 및 로컬 데이터 연동
 - [x] Database package 생성 (공유 DB 모듈/설정)
-- [ ] Database Seed 생성
+- [x] Database Seed 생성
 
 ## 2. Core Authentication & Authorization (인증 및 인가 핵심 기능)
 

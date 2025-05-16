@@ -1,18 +1,13 @@
-version: '3.9'
-
 services:
   mongodb:
     image: mongo:latest
-    container_name: event_platform_mongo
+    container_name: mongo_db_single_rs
     ports:
       - "27017:27017"
     volumes:
-      - ./database/mongo:/data/db
-    command: [ "--replSet", "rs0", "--bind_ip_all" ]
-    healthcheck:
-      test: echo 'try { rs.status().members[0].stateStr } catch (err) { rs.initiate({_id:"rs0",members:[{_id:0,host:"mongodb:27017"}]}).ok }' | mongo --host mongodb --quiet | grep -q "PRIMARY"
-      interval: 5s
-      timeout: 30s
-      start_period: 30s
-      retries: 20
-    restart: always
+      - ./database/mongo:/data/db # 데이터 볼륨 경로
+    command: [ "--replSet", "rs0", "--port", "27017", "--bind_ip_all" ]
+    restart: unless-stopped
+
+volumes:
+  mongo:

@@ -1,5 +1,5 @@
 generator client {
-  provider = "prisma-client-js"
+  provider = "prisma-client"
   output       = "../src/generated/mongo"
   moduleFormat = "esm"
 }
@@ -13,10 +13,11 @@ model User {
   id       String   @id @default(auto()) @map("_id") @db.ObjectId
   email    String   @unique
   username String   @unique
-  password String
+  password String?
   role     UserRole @default(USER)
 
   rewardRequests UserRewardRequest[]
+  authToken AuthToken?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -27,6 +28,15 @@ enum UserRole {
   OPERATOR // 운영자 (이벤트/보상 등록)
   AUDITOR // 감사자 (보상 이력 조회만 가능)
   ADMIN // 관리자 (모든 기능 접근 가능)
+}
+
+model AuthToken {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId     String   @db.ObjectId @unique
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenValue String   @unique
+  expiredAt  DateTime
+  createdAt  DateTime @default(now())
 }
 
 model Event {
