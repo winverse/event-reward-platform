@@ -23,6 +23,7 @@ const configSchema = z.object({
   }),
   jwt: z.object({
     jwtSecretKey: z.string(),
+    jwtExpiresIn: z.string(),
   }),
 });
 

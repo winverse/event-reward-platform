@@ -41,6 +41,7 @@ export const configuration = (): Config => {
       },
       jwt: {
         jwtSecretKey: rawConfig['JWT_SECRET_KEY'],
+        jwtExpiresIn: rawConfig['JWT_EXPIRES_IN'],
       },
     };
     return validateConfig(config);

@@ -1,22 +1,17 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
-import { ExtractJwt, Strategy } from 'passport-jwt';
+import { Strategy } from 'passport-local';
 import { ConfigService } from '@packages/env-config';
-import { LoggedUser } from '@packages/interface';
 import { MongoService } from '@packages/database';
+import { LoggedUser } from '@packages/interface/dist/index.js';
 
 @Injectable()
-export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
+export class LocalStrategy extends PassportStrategy(Strategy, 'local') {
   constructor(
     configService: ConfigService,
     private readonly mongoService: MongoService,
   ) {
-    super({
-      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      ignoreExpiration: false,
-      secretOrKey: configService.get('jwt.jwtSecretKey'),
-      issuer: configService.get('api.gateway_api_host'),
-    });
+    super();
   }
 
   async validate(payload: any): Promise<LoggedUser> {
@@ -30,6 +25,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
     if (!user) {
       throw new UnauthorizedException();
     }
+    
     if (!payload || !payload.userId) {
       throw new UnauthorizedException('Invalid token payload');
     }

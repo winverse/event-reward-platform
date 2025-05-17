@@ -2,6 +2,7 @@ import { Global, Module } from '@nestjs/common';
 import { JwtModule as NestJwtModule } from '@nestjs/jwt';
 import { ConfigService, ConfigModule } from '@packages/env-config';
 import { MongoModule } from '@packages/database';
+import { JwtService } from './jwt.service.js';
 
 @Global()
 @Module({
@@ -20,6 +21,7 @@ import { MongoModule } from '@packages/database';
       inject: [ConfigService],
     }),
   ],
-  exports: [NestJwtModule],
+  providers: [JwtService],
+  exports: [JwtService],
 })
 export class JwtModule {}

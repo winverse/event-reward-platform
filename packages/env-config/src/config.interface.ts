@@ -19,6 +19,7 @@ export type APIConfig = {
 
 export type JWTConfig = {
   readonly jwtSecretKey: string;
+  readonly jwtExpiresIn: string;
 };
 
 export type Config = {
