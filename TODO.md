@@ -16,15 +16,14 @@
 
 ## 2. Core Authentication & Authorization (인증 및 인가 핵심 기능)
 
-- [ ] Auth Server 생성 (사용자 관리 및 JWT 발급 기능)
+- [x] Auth Server 생성 (사용자 관리 및 JWT 발급 기능)
   - [x] 사용자 스키마/엔티티 정의 (MongoDB)
   - [x] 사용자 등록 (회원가입, 권한 설정도 함께) API 구현
-  - [ ] 로그인 API 구현 (비밀번호 검증, JWT 생성)
-  - [ ] 역할(Role) 정의 및 변경 가능
-- [ ] Gateway Server 설정 (인증 및 기본 라우팅)
-  - [ ] JWT 검증 전략 구현 (`AuthGuard`)
-  - [ ] 초기 테스트 라우트에 `AuthGuard` 적용하여 보호
-  - [ ] Auth Server로의 기본 요청 라우팅/프록시 설정
+  - [x] 로그인 API 구현 (비밀번호 검증, JWT 생성)
+  - [x] 역할(Role) 정의 및 변경 가능
+- [x] Gateway Server 설정 (인증 및 기본 라우팅)
+  - [x] JWT 검증 전략 구현 (`AuthGuard`)
+  - [x] Auth Server로의 기본 요청 라우팅/프록시 설정
 
 ## 3. Event Management Core (이벤트 관리 핵심 기능)
 

@@ -1,4 +1,4 @@
-import type { UserRole } from '@packages/database';
+import type { UserRole, User } from '@packages/database';
 
 export type LoggedUser = {
   id: string;
@@ -6,3 +6,5 @@ export type LoggedUser = {
   username: string;
   role: UserRole;
 };
+
+export type SafeUser = Omit<User, 'password'>;

@@ -56,6 +56,9 @@ importers:
       '@packages/env-config':
         specifier: 'workspace: *'
         version: link:../../packages/env-config
+      '@packages/guards':
+        specifier: 'workspace: *'
+        version: link:../../packages/guards
       '@packages/providers':
         specifier: 'workspace: *'
         version: link:../../packages/providers
@@ -461,6 +464,37 @@ importers:
         specifier: ^8.32.0
         version: 8.32.1(eslint@9.26.0(jiti@2.4.2))(typescript@5.8.3)
 
+  packages/guards:
+    dependencies:
+      '@nestjs/common':
+        specifier: ^11.1.1
+        version: 11.1.1(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2)
+      '@nestjs/config':
+        specifier: ^4.0.2
+        version: 4.0.2(@nestjs/common@11.1.1(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(rxjs@7.8.2)
+      '@nestjs/core':
+        specifier: ^11.1.1
+        version: 11.1.1(@nestjs/common@11.1.1(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(reflect-metadata@0.2.2)(rxjs@7.8.2)
+      '@packages/database':
+        specifier: 'workspace: *'
+        version: link:../database
+      '@packages/env-config':
+        specifier: 'workspace: *'
+        version: link:../env-config
+    devDependencies:
+      '@packages/eslint-config':
+        specifier: workspace:*
+        version: link:../eslint-config
+      '@packages/interface':
+        specifier: 'workspace:* '
+        version: link:../interface
+      '@packages/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
+      typescript:
+        specifier: ^5.1.3
+        version: 5.8.3
+
   packages/interface:
     devDependencies:
       '@packages/database':
@@ -505,9 +539,6 @@ importers:
       dotenv:
         specifier: ^16.5.0
         version: 16.5.0
-      jsonwebtoken:
-        specifier: ^9.0.2
-        version: 9.0.2
       passport-jwt:
         specifier: ^4.0.1
         version: 4.0.1
@@ -543,24 +574,6 @@ importers:
   packages/swc-config: {}
 
   packages/typescript-config: {}
-
-  packages/utils:
-    devDependencies:
-      '@packages/database':
-        specifier: workspace:*
-        version: link:../database
-      '@packages/eslint-config':
-        specifier: workspace:*
-        version: link:../eslint-config
-      '@packages/typescript-config':
-        specifier: workspace:*
-        version: link:../typescript-config
-      fastify:
-        specifier: ^5.3.3
-        version: 5.3.3
-      typescript:
-        specifier: ^5.1.3
-        version: 5.8.3
 
 packages:
 

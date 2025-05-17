@@ -8,11 +8,14 @@ import {
   HttpStatus,
   NotFoundException,
   Get,
+  Patch,
+  Param,
 } from '@nestjs/common';
 import { AuthService } from './auth.service.js';
-import { CreateUserDto } from './dto/index.js';
+import { CreateUserDto, UpdateRoleDto } from './dto/index.js';
 import { JwtAuthGuard, LocalAuthGuard } from '@packages/providers';
 import type { FastifyRequest } from 'fastify';
+import { AdminOnly, RolesGuard } from '@packages/guards';
 
 @Controller({
   path: '/',
@@ -42,5 +45,13 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   async getProfile(@Request() req: FastifyRequest) {
     return req.user;
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @AdminOnly()
+  @Patch('/users/:userId/role')
+  @HttpCode(HttpStatus.OK)
+  async updateUserRole(@Body() updateRoleDto: UpdateRoleDto) {
+    return this.authService.updateUserRole(updateRoleDto);
   }
 }
