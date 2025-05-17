@@ -11,6 +11,7 @@
     "check-types": "tsc --noEmit"
   },
   "devDependencies": {
+    "@packages/database": "workspace:*",
     "@packages/eslint-config": "workspace:*",
     "@packages/typescript-config": "workspace:*",
     "typescript": "^5.1.3"

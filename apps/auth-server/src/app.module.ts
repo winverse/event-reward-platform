@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller.js';
-import { configuration, ConfigModule } from '@packages/env-config';
+import { configuration, ConfigModule } from '@packages/providers';
 import { ConfigModule as NestConfigModule } from '@nestjs/config';
 import { MongoModule } from '@packages/database/mongo';
 

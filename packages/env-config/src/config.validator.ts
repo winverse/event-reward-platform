@@ -16,6 +16,12 @@ const configSchema = z.object({
       .string({ required_error: 'Database URL is required' })
       .min(1, { message: 'Database URL cannot be empty' }),
   }),
+  api: z.object({
+    api_host: z.string(),
+  }),
+  jwt: z.object({
+    jwtSecretKey: z.string(),
+  }),
 });
 
 export const validateConfig = (config: unknown): Config => {

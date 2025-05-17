@@ -34,6 +34,12 @@ export const configuration = (): Config => {
         database_provider: rawConfig['DATABASE_PROVIDER'] as 'mongodb',
         database_url: rawConfig['DATABASE_URL'],
       },
+      api: {
+        api_host: rawConfig['API_HOST'],
+      },
+      jwt: {
+        jwtSecretKey: rawConfig['JWT_SECRET_KEY'],
+      },
     };
     return validateConfig(config);
   } catch (error) {

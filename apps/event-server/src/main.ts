@@ -5,8 +5,9 @@ import {
   NestFastifyApplication,
 } from '@nestjs/platform-fastify';
 import { VersioningType } from '@nestjs/common';
+import process from 'node:process';
 
-const PORT = 5002;
+
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
@@ -19,12 +20,14 @@ async function bootstrap() {
     type: VersioningType.URI,
   });
 
-  await app.listen(PORT);
+  const port = process.env.EVENT_SERVER_PORT ?? String(5002);
+  await app.listen(port);
+  return port;
 }
 
 bootstrap()
-  .then(() => {
-    console.log(`Event Server is running on http://localhost:${PORT}`);
+  .then((port) => {
+    console.log(`Event Server is running on http://localhost:${port}`);
   })
   .catch((err) => {
     console.error(`Event Server is failed to start. ${err}`);

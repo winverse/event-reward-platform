@@ -28,8 +28,9 @@ export class MongoService
 
   async onModuleInit() {
     try {
-      await this.$connect();
-      console.log(`Database connected successfully. URL: ${this.dbUrl}`);
+      await this.$connect().then(() => {
+        console.log(`Database connected successfully. URL: ${this.dbUrl}`);
+      });
     } catch (error) {
       console.error(error);
       throw new HttpException('SERVER_ERROR', 503);

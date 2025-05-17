@@ -6,6 +6,10 @@
     "./mongo": {
       "default": "./dist/mongo/index.js",
       "types": "./dist/mongo/index.d.ts"
+    },
+    "./generated": {
+      "default": "./dist/generated/mongo/index.js",
+      "types": "./dist/generated/mongo/index.d.ts"
     }
   },
   "scripts": {

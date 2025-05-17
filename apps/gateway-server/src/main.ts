@@ -5,7 +5,7 @@ import {
 } from '@nestjs/platform-fastify';
 import { VersioningType } from '@nestjs/common';
 import { AppModule } from './app.module.js';
-import * as process from 'node:process';
+import process from 'node:process';
 
 
 async function bootstrap() {
@@ -18,7 +18,7 @@ async function bootstrap() {
   app.enableVersioning({
     type: VersioningType.URI,
   });
-
+  
   const port = process.env.GATEWAY_SERVER_PORT ?? String(5000);
   await app.listen(port);
   return port;

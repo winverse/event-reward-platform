@@ -11,8 +11,18 @@ export type DBConfig = {
   readonly database_url: string;
 };
 
+export type APIConfig = {
+  readonly api_host: string;
+};
+
+export type JWTConfig = {
+  readonly jwtSecretKey: string;
+};
+
 export type Config = {
   readonly env: 'development' | 'production' | 'test';
   readonly app: AppConfig;
   readonly db: DBConfig;
+  readonly api: APIConfig;
+  readonly jwt: JWTConfig;
 };

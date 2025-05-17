@@ -5,8 +5,7 @@ import {
   NestFastifyApplication,
 } from '@nestjs/platform-fastify';
 import { VersioningType } from '@nestjs/common';
-
-const PORT = 5001;
+import process from 'node:process';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
@@ -19,12 +18,14 @@ async function bootstrap() {
     type: VersioningType.URI,
   });
 
-  await app.listen(PORT);
+  const port = process.env.AUTH_SERVER_PORT ?? String(5001);
+  await app.listen(port);
+  return port;
 }
 
 bootstrap()
-  .then(() => {
-    console.log(`Auth Server is running on http://localhost:${PORT}`);
+  .then((port) => {
+    console.log(`Auth Server is running on http://localhost:${port}`);
   })
   .catch((err) => {
     console.error(`Auth Server is failed to start. ${err}`);
