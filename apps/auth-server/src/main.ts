@@ -18,7 +18,7 @@ async function bootstrap() {
     type: VersioningType.URI,
   });
 
-  const port = process.env.AUTH_SERVER_PORT ?? String(5001);
+  const port = process.env.AUTH_SERVER_PORT!;
   await app.listen(port);
   return port;
 }

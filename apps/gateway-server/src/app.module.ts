@@ -6,7 +6,10 @@ import { PassportModule, JwtModule } from '@packages/providers';
 
 @Module({
   imports: [
-    NestConfigModule.forRoot({ load: [configuration] }),
+    NestConfigModule.forRoot({
+      isGlobal: true,
+      load: [configuration],
+    }),
     ConfigModule,
     PassportModule,
     JwtModule,

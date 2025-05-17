@@ -1,11 +1,13 @@
 import { Global, Module } from '@nestjs/common';
 import { JwtModule as NestJwtModule } from '@nestjs/jwt';
 import { ConfigService, ConfigModule } from '@packages/env-config';
+import { MongoModule } from '@packages/database';
 
 @Global()
 @Module({
   imports: [
     ConfigModule,
+    MongoModule,
     NestJwtModule.registerAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => {

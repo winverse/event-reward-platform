@@ -17,8 +17,8 @@
 ## 2. Core Authentication & Authorization (인증 및 인가 핵심 기능)
 
 - [ ] Auth Server 생성 (사용자 관리 및 JWT 발급 기능)
-  - [ ] 사용자 스키마/엔티티 정의 (MongoDB)
-  - [ ] 사용자 등록 (회원가입, 권한 설정도 함께) API 구현
+  - [x] 사용자 스키마/엔티티 정의 (MongoDB)
+  - [x] 사용자 등록 (회원가입, 권한 설정도 함께) API 구현
   - [ ] 로그인 API 구현 (비밀번호 검증, JWT 생성)
   - [ ] 역할(Role) 정의 및 변경 가능
 - [ ] Gateway Server 설정 (인증 및 기본 라우팅)

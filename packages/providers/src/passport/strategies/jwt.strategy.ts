@@ -3,7 +3,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { ConfigService } from '@packages/env-config';
 import { LoggedUser } from '@packages/interface/dist/index.js';
-import { MongoService } from '@packages/database/mongo';
+import { MongoService } from '@packages/database';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
@@ -15,7 +15,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
       secretOrKey: configService.get('jwt.jwtSecretKey'),
-      issuer: configService.get('api.api_host'),
+      issuer: configService.get('api.gateway_api_host'),
     });
   }
 

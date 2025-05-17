@@ -1,4 +1,4 @@
-import { UserRole } from '@packages/database/generated';
+import type { UserRole } from '@packages/database';
 
 export type LoggedUser = {
   userId: string;

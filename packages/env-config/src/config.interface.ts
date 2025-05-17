@@ -12,7 +12,9 @@ export type DBConfig = {
 };
 
 export type APIConfig = {
-  readonly api_host: string;
+  readonly gateway_api_host: string;
+  readonly auth_api_host: string;
+  readonly event_api_host: string;
 };
 
 export type JWTConfig = {

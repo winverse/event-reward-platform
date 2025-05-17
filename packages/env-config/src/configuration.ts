@@ -35,7 +35,9 @@ export const configuration = (): Config => {
         database_url: rawConfig['DATABASE_URL'],
       },
       api: {
-        api_host: rawConfig['API_HOST'],
+        gateway_api_host: rawConfig['GATEWAY_API_HOST'],
+        auth_api_host: rawConfig['AUTH_API_HOST'],
+        event_api_host: rawConfig['EVENT_API_HOST'],
       },
       jwt: {
         jwtSecretKey: rawConfig['JWT_SECRET_KEY'],

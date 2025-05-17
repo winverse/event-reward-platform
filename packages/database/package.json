@@ -2,16 +2,8 @@
   "name": "@packages/database",
   "version": "0.0.1",
   "type": "module",
-  "exports": {
-    "./mongo": {
-      "default": "./dist/mongo/index.js",
-      "types": "./dist/mongo/index.d.ts"
-    },
-    "./generated": {
-      "default": "./dist/generated/mongo/index.js",
-      "types": "./dist/generated/mongo/index.d.ts"
-    }
-  },
+  "main": "./dist/mongo/index.js",
+  "types": "./dist/mongo/index.d.ts",
   "scripts": {
     "db:push": "pnpm copy:env && npx prisma db push",
     "generate:prisma": "dotenv -e ../../env/.env.development tsx scripts/generate-prisma.ts",

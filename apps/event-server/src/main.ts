@@ -20,7 +20,7 @@ async function bootstrap() {
     type: VersioningType.URI,
   });
 
-  const port = process.env.EVENT_SERVER_PORT ?? String(5002);
+  const port = process.env.EVENT_SERVER_PORT!;
   await app.listen(port);
   return port;
 }

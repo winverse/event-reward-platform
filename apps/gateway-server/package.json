@@ -19,14 +19,16 @@
     "check-types": "tsc --noEmit"
   },
   "dependencies": {
+    "@fastify/http-proxy": "^11.1.2",
     "@nestjs/common": "^11.1.1",
     "@nestjs/config": "^4.0.2",
     "@nestjs/core": "^11.1.1",
     "@nestjs/platform-fastify": "^11.1.1",
     "@packages/database": "workspace:*",
     "@packages/env-config": "workspace:*",
-    "@packages/providers": "workspace:*",
     "@packages/interface": "workspace:*",
+    "@packages/providers": "workspace:*",
+    "fastify": "^5.3.3",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1"
   },
@@ -37,8 +39,7 @@
     "@packages/eslint-config": "workspace:*",
     "@packages/swc-config": "workspace:*",
     "@packages/typescript-config": "workspace:*",
-    "@types/express": "^5.0.0",
-    "@types/jest": "^29.5.2",
+    "@types/jest": "^29.5.14",
     "@types/node": "^20.3.1",
     "@types/supertest": "^6.0.0",
     "@typescript-eslint/eslint-plugin": "^8.0.0",

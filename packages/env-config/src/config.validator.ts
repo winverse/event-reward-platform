@@ -17,7 +17,9 @@ const configSchema = z.object({
       .min(1, { message: 'Database URL cannot be empty' }),
   }),
   api: z.object({
-    api_host: z.string(),
+    gateway_api_host: z.string(),
+    auth_api_host: z.string(),
+    event_api_host: z.string(),
   }),
   jwt: z.object({
     jwtSecretKey: z.string(),
