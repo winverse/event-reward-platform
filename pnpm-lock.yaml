@@ -53,6 +53,9 @@ importers:
       '@packages/env-config':
         specifier: 'workspace: *'
         version: link:../../packages/env-config
+      '@packages/providers':
+        specifier: 'workspace: *'
+        version: link:../../packages/providers
       dotenv:
         specifier: ^16.5.0
         version: 16.5.0
@@ -265,6 +268,9 @@ importers:
       '@packages/interface':
         specifier: workspace:*
         version: link:../../packages/interface
+      '@packages/providers':
+        specifier: workspace:*
+        version: link:../../packages/providers
       reflect-metadata:
         specifier: ^0.2.0
         version: 0.2.2
