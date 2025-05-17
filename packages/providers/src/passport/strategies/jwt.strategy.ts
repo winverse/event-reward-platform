@@ -20,7 +20,10 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   }
 
   async validate(payload: any): Promise<LoggedUser> {
-    console.log('validate PassportStrategy payload', payload);
+    if (!payload) {
+      throw new UnauthorizedException('Invalid token payload');
+    }
+
     const user = await this.mongoService.user.findUnique({
       where: {
         id: payload.id,
@@ -28,11 +31,9 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
     });
 
     if (!user) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException('User not found');
     }
-    if (!payload || !payload.userId) {
-      throw new UnauthorizedException('Invalid token payload');
-    }
+
     return {
       id: user.id,
       username: user.username,

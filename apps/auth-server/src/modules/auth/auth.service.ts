@@ -1,10 +1,10 @@
 import { Injectable, ConflictException } from '@nestjs/common';
-import { MongoService, User } from '@packages/database';
-import { JwtService } from '@packages/providers';
-import { ConfigService } from '@packages/env-config';
 import bcrypt from 'bcrypt';
-import { CreateUserDto } from './dto/index.js';
+import { MongoService, User } from '@packages/database';
+import { JwtService, UtilsService } from '@packages/providers';
+import { ConfigService } from '@packages/env-config';
 import { LoggedUser } from '@packages/interface/dist/index.js';
+import { CreateUserDto } from './dto/index.js';
 
 @Injectable()
 export class AuthService {
@@ -12,6 +12,7 @@ export class AuthService {
     private readonly mongoService: MongoService,
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
+    private readonly utilsService: UtilsService,
   ) {}
 
   async createUser(
@@ -34,9 +35,7 @@ export class AuthService {
       throw new ConflictException('Username already exists');
     }
 
-    const saltRounds = 10;
-    const hashedPassword = await bcrypt.hash(password, saltRounds);
-
+    const hashedPassword = await this.utilsService.hashPassword(password);
     const user = await this.mongoService.user.create({
       data: {
         email,
@@ -48,21 +47,9 @@ export class AuthService {
     return rest;
   }
 
-  async validateUser(
-    email: string,
-    pass: string,
-  ): Promise<Omit<User, 'password'> | null> {
-    const user = await this.mongoService.user.findUnique({ where: { email } });
-    if (user && (await bcrypt.compare(pass, user.password))) {
-      const { password, ...result } = user;
-      return result;
-    }
-    return null;
-  }
-
   async login(user: LoggedUser) {
     const payload = {
-      userId: user.id,
+      id: user.id,
       username: user.username,
       email: user.email,
       role: user.role,
@@ -70,8 +57,8 @@ export class AuthService {
 
     const expiresIn = this.configService.get('jwt.jwtExpiresIn');
     return {
-      accessToken: await this.jwtService.signAsync(payload, { expiresIn }),
-      refreshToken: await this.jwtService.signAsync(
+      accessToken: this.jwtService.sign(payload, { expiresIn }),
+      refreshToken: this.jwtService.sign(
         { userId: user.id },
         { expiresIn: '7d' },
       ),

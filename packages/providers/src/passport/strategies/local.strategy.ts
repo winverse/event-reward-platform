@@ -1,34 +1,48 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-local';
-import { ConfigService } from '@packages/env-config';
 import { MongoService } from '@packages/database';
 import { LoggedUser } from '@packages/interface/dist/index.js';
+import { UtilsService } from '../../utils/index.js';
+import { ConfigService } from '@packages/env-config';
 
 @Injectable()
 export class LocalStrategy extends PassportStrategy(Strategy, 'local') {
   constructor(
-    configService: ConfigService,
+    private readonly configService: ConfigService,
     private readonly mongoService: MongoService,
+    private readonly utilsService: UtilsService,
   ) {
-    super();
+    super({
+      usernameField: 'email',
+      passwordField: 'password',
+    });
   }
 
-  async validate(payload: any): Promise<LoggedUser> {
-    console.log('validate PassportStrategy payload', payload);
+  async validate(email: string, password: string): Promise<LoggedUser> {
     const user = await this.mongoService.user.findUnique({
       where: {
-        id: payload.id,
+        email,
       },
     });
 
     if (!user) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException('NOT_FOUND_USER');
+    }
+
+    const isPasswordValid = await this.utilsService.comparePassword(
+      password,
+      user.password,
+    );
+
+    if (!isPasswordValid) {
+      throw new UnauthorizedException('WRONG_PASSWORD');
     }
     
-    if (!payload || !payload.userId) {
-      throw new UnauthorizedException('Invalid token payload');
-    }
     return {
       id: user.id,
       username: user.username,

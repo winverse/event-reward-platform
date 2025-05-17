@@ -13,9 +13,11 @@ import { JwtService } from './jwt.service.js';
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => {
         const secret = configService.get('jwt.jwtSecretKey');
+        const expiresIn = configService.get('jwt.jwtExpiresIn');
+        const issuer = configService.get('api.gateway_api_host');
         return {
           secret: secret,
-          signOptions: { expiresIn: '1h' },
+          signOptions: { expiresIn, issuer },
         };
       },
       inject: [ConfigService],

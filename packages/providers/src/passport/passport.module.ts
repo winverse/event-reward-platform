@@ -2,16 +2,19 @@ import { Global, Module } from '@nestjs/common';
 import { PassportModule as NestPassportModule } from '@nestjs/passport';
 import { ConfigModule } from '@packages/env-config';
 import { MongoModule } from '@packages/database';
-import { JwtStrategy } from './strategies/index.js';
+import { JwtStrategy, LocalStrategy } from './strategies/index.js';
+import { UtilsModule } from '../utils/utils.module.js';
+
 
 @Global()
 @Module({
   imports: [
     ConfigModule,
-    NestPassportModule.register({ defaultStrategy: 'jwt' }),
+    NestPassportModule.register({ defaultStrategy: 'local' }),
     MongoModule,
+    UtilsModule,
   ],
-  providers: [JwtStrategy],
+  providers: [LocalStrategy, JwtStrategy],
   exports: [NestPassportModule],
 })
 export class PassportModule {}
