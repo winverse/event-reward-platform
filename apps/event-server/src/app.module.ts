@@ -7,6 +7,8 @@ import { RewardModule } from '@modules/reward/index.js';
 import { JwtModule, PassportModule } from '@packages/providers';
 import { MongoModule } from '@packages/database';
 import { RewardRequestModule } from '@modules/reward-request/index.js';
+import { APP_FILTER } from '@nestjs/core';
+import { HttpExceptionFilter } from '@packages/filters';
 
 @Module({
   imports: [
@@ -20,5 +22,11 @@ import { RewardRequestModule } from '@modules/reward-request/index.js';
     RewardRequestModule,
   ],
   controllers: [AppController],
+  providers: [
+    {
+      provide: APP_FILTER,
+      useClass: HttpExceptionFilter,
+    },
+  ],
 })
 export class AppModule {}

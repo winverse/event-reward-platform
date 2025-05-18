@@ -25,6 +25,7 @@
     "@nestjs/platform-fastify": "^11.1.1",
     "@packages/database": "workspace:*",
     "@packages/env-config": "workspace: *",
+    "@packages/filters": "workspace:*",
     "@packages/guards": "workspace: *",
     "@packages/interface": "workspace: *",
     "@packages/providers": "workspace: *",

@@ -224,14 +224,6 @@ export class RewardRequestService implements RewardRequestServiceInterface {
     );
   }
 
-  private isDailyResetReward(
-    conditions: any,
-  ): conditions is DailyResetConditions {
-    return (
-      conditions && typeof conditions === 'object' && 'dailyReset' in conditions
-    );
-  }
-
   private async callExternalAPI(
     taskType: TaskType,
     ...body: any[]
@@ -240,10 +232,11 @@ export class RewardRequestService implements RewardRequestServiceInterface {
       const isMapEntryTask = this.isMapEntryTask({ taskType });
       const isMonsterHuntTask = this.isMonsterHuntTask({ taskType });
       const isItemCollectionTask = this.isItemCollectionTask({ taskType });
+      const baseURI = 'https://nexon.com/api/v13/maple';
 
       // 조건마다 인게임 서버 API 경로를 다르게 호출
       if (isMapEntryTask) {
-        await this.utilsService.fakeAxios('https://nexon.com/mapEntry', {
+        await this.utilsService.fakeAxios(`${baseURI}/mapEntry`, {
           method: 'GET',
           data: body,
         });
@@ -251,7 +244,7 @@ export class RewardRequestService implements RewardRequestServiceInterface {
       }
 
       if (isMonsterHuntTask) {
-        await this.utilsService.fakeAxios('https://nexon.com/monster-hunt', {
+        await this.utilsService.fakeAxios(`${baseURI}/monster-hunt`, {
           method: 'GET',
           data: body,
         });
@@ -259,7 +252,7 @@ export class RewardRequestService implements RewardRequestServiceInterface {
       }
 
       if (isItemCollectionTask) {
-        await this.utilsService.fakeAxios('https://nexon.com/item-collection', {
+        await this.utilsService.fakeAxios(`${baseURI}/item-collection`, {
           method: 'GET',
           data: body,
         });

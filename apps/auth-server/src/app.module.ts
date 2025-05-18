@@ -6,6 +6,8 @@ import { AppController } from './app.controller.js';
 import { PassportModule, JwtModule } from '@packages/providers';
 import { AuthModule } from '@modules/auth/index.js';
 import { UserModule } from '@modules/user/index.js';
+import { APP_FILTER } from '@nestjs/core';
+import { HttpExceptionFilter } from '@packages/filters';
 
 @Module({
   imports: [
@@ -18,5 +20,11 @@ import { UserModule } from '@modules/user/index.js';
     UserModule,
   ],
   controllers: [AppController],
+  providers: [
+    {
+      provide: APP_FILTER,
+      useClass: HttpExceptionFilter,
+    },
+  ],
 })
 export class AppModule {}
