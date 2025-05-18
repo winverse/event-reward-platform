@@ -1,22 +1,19 @@
 import {
   Injectable,
   ConflictException,
-  NotFoundException,
 } from '@nestjs/common';
 import { MongoService } from '@packages/database';
 import { JwtService, UtilsService } from '@packages/providers';
 import { ConfigService } from '@packages/env-config';
 import { LoggedUser, SafeUser } from '@packages/interface';
-import { CreateUserDto, UpdateRoleDto } from './dto/index.js';
+import { CreateUserDto } from './dto/index.js';
 
 interface AuthServiceInterface {
+  // 유저 생성
   createUser(createUserDto: CreateUserDto): Promise<SafeUser>;
 
-  login(
-    user: LoggedUser,
-  ): Promise<{ accessToken: string; refreshToken: string }>;
-
-  updateUserRole(updateRoleDto: UpdateRoleDto): Promise<SafeUser>;
+  // 로그인
+  login(user: LoggedUser): Promise<{ accessToken: string }>;
 }
 
 @Injectable()
@@ -69,28 +66,6 @@ export class AuthService implements AuthServiceInterface {
     const expiresIn = this.configService.get('jwt.jwtExpiresIn');
     return {
       accessToken: this.jwtService.sign(payload, { expiresIn }),
-      refreshToken: this.jwtService.sign(
-        { userId: user.id },
-        { expiresIn: '7d' },
-      ),
     };
-  }
-
-  public async updateUserRole(updateRoleDto: UpdateRoleDto): Promise<SafeUser> {
-    const user = await this.mongoService.user.findUnique({
-      where: { id: updateRoleDto.userId },
-    });
-
-    if (!user) {
-      throw new NotFoundException('NOT_FOUND_USER');
-    }
-
-    const updatedUser = await this.mongoService.user.update({
-      where: { id: updateRoleDto.userId },
-      data: { role: updateRoleDto.role },
-    });
-
-    const { password, ...result } = updatedUser;
-    return result;
   }
 }

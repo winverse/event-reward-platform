@@ -5,6 +5,7 @@ import { MongoModule } from '@packages/database';
 import { AppController } from './app.controller.js';
 import { PassportModule, JwtModule } from '@packages/providers';
 import { AuthModule } from '@modules/auth/index.js';
+import { UserModule } from '@modules/user/index.js';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { AuthModule } from '@modules/auth/index.js';
     PassportModule,
     JwtModule,
     AuthModule,
+    UserModule,
   ],
   controllers: [AppController],
 })

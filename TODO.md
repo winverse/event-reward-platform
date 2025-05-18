@@ -28,7 +28,7 @@
 ## 3. Event Management Core (이벤트 관리 핵심 기능)
 
 - [ ] Event Server 생성 (핵심 이벤트 및 보상 로직)
-  - [ ] 이벤트 및 보상 스키마/엔티티 정의 (MongoDB)
+  - [x] 이벤트 및 보상 스키마/엔티티 정의 (MongoDB)
   - [ ] 이벤트/보상 생성 및 조회 API 구현 (운영자/관리자 역할)
 - [ ] Event Server와 Gateway 연동
   - [ ] Gateway에 Event Server API 라우팅 규칙 및 역할 기반 인가(Authorization) 추가

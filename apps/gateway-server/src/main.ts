@@ -6,7 +6,7 @@ import {
 import { VersioningType } from '@nestjs/common';
 import { AppModule } from './app.module.js';
 import process from 'node:process';
-import proxy from '@fastify/http-proxy';
+import { ProxyService } from './proxy/index.js';
 
 
 async function bootstrap() {
@@ -20,21 +20,9 @@ async function bootstrap() {
     type: VersioningType.URI,
   });
 
-  // env-config에서 검증하기 때문에 항상 존재
-  const authApiHost = process.env.AUTH_API_HOST!;
-  const eventApiHost = process.env.EVENT_API_HOST!;
-
-  await app.register(proxy, {
-    upstream: authApiHost,
-    prefix: '/api/v1/auth',
-    rewritePrefix: '/api/v1',
-  });
-
-  await app.register(proxy, {
-    upstream: eventApiHost,
-    prefix: '/api/v1/event',
-    rewritePrefix: '/api/v1',
-  });
+  // proxy 설정
+  const proxyService = app.get(ProxyService);
+  await proxyService.registerProxies(app);
 
   const port = process.env.GATEWAY_SERVER_PORT!;
   await app.listen(port);
