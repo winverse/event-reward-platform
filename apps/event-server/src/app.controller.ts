@@ -5,7 +5,11 @@ import { Controller, Get } from '@nestjs/common';
 })
 export class AppController {
   @Get('/health')
-  health(): string {
-    return 'event server is ok';
+  health() {
+    return {
+      status: 'OK',
+      service: 'event-server',
+      timestamp: new Date().toISOString(),
+    };
   }
 }

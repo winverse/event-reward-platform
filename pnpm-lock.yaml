@@ -180,6 +180,18 @@ importers:
       '@packages/env-config':
         specifier: 'workspace: *'
         version: link:../../packages/env-config
+      '@packages/guards':
+        specifier: 'workspace: *'
+        version: link:../../packages/guards
+      '@packages/providers':
+        specifier: 'workspace: *'
+        version: link:../../packages/providers
+      class-transformer:
+        specifier: ^0.5.1
+        version: 0.5.1
+      class-validator:
+        specifier: ^0.14.2
+        version: 0.14.2
       dotenv:
         specifier: ^16.5.0
         version: 16.5.0

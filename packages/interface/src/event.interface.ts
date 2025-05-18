@@ -1,3 +1,5 @@
+import { Event, Reward } from '@packages/database';
+
 export type TaskType =
   | 'mapEntry'
   | 'monsterHunt'
@@ -42,3 +44,7 @@ export type ExchangeLimitConditions = {
 };
 
 export type EventConditions = DailyResetConditions | ExchangeLimitConditions;
+
+export type EventWithRewards = Event & {
+  rewards: Reward[];
+};

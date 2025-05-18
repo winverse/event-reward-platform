@@ -8,7 +8,11 @@ export class AppController {
   constructor() {}
 
   @Get('/health')
-  health(): string {
-    return 'auth server is ok';
+  health() {
+    return {
+      status: 'OK',
+      service: 'auth-server',
+      timestamp: new Date().toISOString(),
+    };
   }
 }
