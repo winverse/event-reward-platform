@@ -4,6 +4,7 @@ import { Controller, Get } from '@nestjs/common';
   version: '1',
 })
 export class AppController {
+  // alternative @nestjs/terminus
   @Get('/health')
   health() {
     return {
