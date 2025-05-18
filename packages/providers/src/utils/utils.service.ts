@@ -12,4 +12,8 @@ export class UtilsService {
   public async comparePassword(password: string, hashed: string) {
     return await bcrypt.compare(password, hashed);
   }
+
+  public async sleep(ms: number) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
 }

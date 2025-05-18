@@ -106,14 +106,10 @@ model UserRewardRequest {
   claimedDate String // YYYY-MM-DD
 
   requestedAt DateTime      @default(now())
-
-  @@unique([userId, eventId, rewardId, claimedDate], name: "unique_user_event_reward_claim")
 }
 
 enum RequestStatus {
   PENDING
-  APPROVED
-  REJECTED
-  PAID_OUT
   FAILED
+  APPROVED
 }

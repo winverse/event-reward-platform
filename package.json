@@ -13,6 +13,7 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "check-types": "turbo run check-types",
     "prisma:init": "pnpm --filter=@packages/database generate:prisma",
+    "prisma:seed": "pnpm --filter=@packages/database generate:seed",
     "clean": "shx rm -rf ./node_modules ./apps/*/node_modules ./packages/*/node_modules ./apps/*/dist ./packages/*/dist"
   },
   "devDependencies": {

@@ -7,44 +7,37 @@ export type TaskType =
   | 'bossHunt'
   | 'itemCollection';
 
-export interface BaseTaskCondition {
+interface BaseTask {
   type: TaskType;
   description?: string;
 }
 
-export interface MapEntryTaskCondition extends BaseTaskCondition {
+export interface MapEntryTask extends BaseTask {
   type: 'mapEntry';
   mapName: string;
 }
 
-export interface MonsterHuntTaskCondition extends BaseTaskCondition {
+export interface MonsterHuntTask extends BaseTask {
   type: 'monsterHunt' | 'eliteHunt' | 'bossHunt';
   targetCount: number;
 }
 
-export interface ItemCollectionTaskCondition extends BaseTaskCondition {
+export interface ItemCollectionTask extends BaseTask {
   type: 'itemCollection';
   itemName: string;
   itemQuantity: number;
 }
 
-export type EventTaskCondition =
-  | MapEntryTaskCondition
-  | MonsterHuntTaskCondition
-  | ItemCollectionTaskCondition;
+export type EventTask = MapEntryTask | MonsterHuntTask | ItemCollectionTask;
 
 export type DailyResetConditions = {
-  tasks: EventTaskCondition[];
+  tasks: EventTask[];
   dailyReset: boolean;
 };
 
 export type ExchangeLimitConditions = {
-  tasks: EventTaskCondition[];
+  tasks: EventTask[];
   exchangeLimitPerAccount: number;
 };
 
 export type EventConditions = DailyResetConditions | ExchangeLimitConditions;
-
-export type EventWithRewards = Event & {
-  rewards: Reward[];
-};

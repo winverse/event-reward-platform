@@ -1,6 +1,15 @@
-import { IsInt, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import {
+  ArrayMinSize,
+  IsArray,
+  IsInt,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  ValidateNested,
+} from 'class-validator';
+import { Type } from 'class-transformer';
 
-export class CreateRewardDto {
+class CreateRewardDto {
   @IsNotEmpty()
   @IsString()
   name: string;
@@ -14,12 +23,16 @@ export class CreateRewardDto {
   quantity: number;
 
   @IsOptional()
-  @IsString()
-  externalItemId?: string;
-
-  @IsOptional()
   @IsInt()
   rewardOrder?: number;
+}
+
+export class CreateRewardsDto {
+  @IsArray()
+  @ArrayMinSize(1)
+  @ValidateNested({ each: true })
+  @Type(() => CreateRewardDto)
+  rewards: CreateRewardDto[];
 
   @IsNotEmpty()
   @IsString()

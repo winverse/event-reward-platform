@@ -3,18 +3,16 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
-  Delete,
   Query,
   UseGuards,
   HttpCode,
   HttpStatus,
 } from '@nestjs/common';
 import { EventService } from './event.service.js';
-import { CreateEventDto, UpdateEventDto, EventQueryDto } from './dto/index.js';
+import { CreateEventDto, EventQueryDto } from './dto/index.js';
 import { JwtAuthGuard } from '@packages/providers';
-import { AdminOnly, RolesGuard, OperatorAccess } from '@packages/guards';
+import { RolesGuard, OperatorAccess } from '@packages/guards';
 
 @Controller({
   path: '/events',
@@ -23,15 +21,16 @@ import { AdminOnly, RolesGuard, OperatorAccess } from '@packages/guards';
 export class EventController {
   constructor(private readonly eventService: EventService) {}
 
-  // event list
-  @UseGuards(JwtAuthGuard)
+  // 1. 운영자 또는 관리자, 이벤트 목록 조회
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @OperatorAccess()
   @Get('/')
   @HttpCode(HttpStatus.OK)
   findAll(@Query() query: EventQueryDto) {
     return this.eventService.findAll(query);
   }
 
-  // event 조회
+  // 2. 이벤트 상세 조회
   @UseGuards(JwtAuthGuard)
   @Get('/:id')
   @HttpCode(HttpStatus.OK)
@@ -39,30 +38,12 @@ export class EventController {
     return this.eventService.findOne(id);
   }
 
-  // event 생성
+  // 3. 이벤트 등록
   @UseGuards(JwtAuthGuard, RolesGuard)
   @OperatorAccess()
   @Post('/')
   @HttpCode(HttpStatus.CREATED)
   create(@Body() createEventDto: CreateEventDto) {
     return this.eventService.create(createEventDto);
-  }
-
-  // event 업데이트
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @OperatorAccess()
-  @Patch('/:id')
-  @HttpCode(HttpStatus.OK)
-  update(@Param('id') id: string, @Body() updateEventDto: UpdateEventDto) {
-    return this.eventService.update(id, updateEventDto);
-  }
-
-  // event 삭제
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @AdminOnly()
-  @Delete('/:id')
-  @HttpCode(HttpStatus.OK)
-  remove(@Param('id') id: string) {
-    return this.eventService.remove(id);
   }
 }

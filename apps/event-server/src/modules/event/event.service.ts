@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { MongoService, Prisma, Event } from '@packages/database';
-import { CreateEventDto, UpdateEventDto, EventQueryDto } from './dto/index.js';
+import { CreateEventDto, EventQueryDto } from './dto/index.js';
 
 interface EventServiceInterface {
   // 이벤트 조회
@@ -13,15 +13,6 @@ interface EventServiceInterface {
   create(
     createEventDto: CreateEventDto,
   ): Promise<Prisma.EventCreateArgs['data']>;
-
-  // 이벤트 수정
-  update(
-    id: string,
-    updateEventDto: UpdateEventDto,
-  ): Promise<Prisma.EventUpdateArgs['data']>;
-
-  // 이벤트 삭제
-  remove(id: string): Promise<void>;
 }
 
 @Injectable()
@@ -60,35 +51,6 @@ export class EventService implements EventServiceInterface {
   async create(createEventDto: CreateEventDto) {
     return this.mongoService.event.create({
       data: createEventDto,
-    });
-  }
-
-  async update(id: string, updateEventDto: UpdateEventDto) {
-    const event = await this.mongoService.event.findUnique({
-      where: { id },
-    });
-
-    if (!event) {
-      throw new NotFoundException('Event not found');
-    }
-
-    return this.mongoService.event.update({
-      where: { id },
-      data: updateEventDto,
-    });
-  }
-
-  async remove(id: string) {
-    const event = await this.mongoService.event.findUnique({
-      where: { id },
-    });
-
-    if (!event) {
-      throw new NotFoundException('Event not found');
-    }
-
-    await this.mongoService.event.delete({
-      where: { id },
     });
   }
 }

@@ -28,4 +28,9 @@ export const eventRoutes = (eventApiHost: string): ProxyRoute[] => [
     prefix: '/api/v1/reward',
     rewritePrefix: '/api/v1/reward',
   },
+  {
+    upstream: eventApiHost,
+    prefix: '/api/v1/reward-request',
+    rewritePrefix: '/api/v1/reward-request',
+  },
 ];
