@@ -14,7 +14,6 @@ import {
 } from '@packages/database';
 import { CreateRewardRequestDto, RewardRequestQueryDto } from './dto/index.js';
 import {
-  DailyResetConditions,
   ExchangeLimitConditions,
   MapEntryTask,
   MonsterHuntTask,
@@ -43,7 +42,6 @@ interface RewardRequestServiceInterface {
 
 @Injectable()
 export class RewardRequestService implements RewardRequestServiceInterface {
-  private readonly logger = new Logger(RewardRequestService.name);
   constructor(
     private readonly mongoService: MongoService,
     private readonly utilsService: UtilsService,
@@ -220,7 +218,7 @@ export class RewardRequestService implements RewardRequestServiceInterface {
     return (
       conditions &&
       typeof conditions === 'object' &&
-      'exchangeLimitPerAccount' in conditions
+      conditions.conditionKind === 'exchangeLimit'
     );
   }
 

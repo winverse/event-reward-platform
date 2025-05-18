@@ -29,11 +29,13 @@ export interface ItemCollectionTask extends BaseTask {
 export type EventTask = MapEntryTask | MonsterHuntTask | ItemCollectionTask;
 
 export type DailyResetConditions = {
+  conditionKind: 'dailyReset';
   tasks: EventTask[];
   dailyReset: boolean;
 };
 
 export type ExchangeLimitConditions = {
+  conditionKind: 'exchangeLimit';
   tasks: EventTask[];
   exchangeLimitPerAccount: number;
 };

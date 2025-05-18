@@ -1,12 +1,9 @@
-// event-server/src/modules/reward/reward.controller.ts
 import {
   Controller,
   Get,
   Post,
   Body,
-  Patch,
   Param,
-  Delete,
   UseGuards,
   HttpCode,
   HttpStatus,
