@@ -7,6 +7,10 @@ import { JwtService, UtilsService } from '@packages/providers';
 import { ConfigService } from '@packages/env-config';
 import { LoggedUser, SafeUser } from '@packages/interface';
 import { CreateUserDto } from './dto/index.js';
+import {
+  ALREADY_EXISTING_EMAIL_ERROR,
+  ALREADY_EXISTING_NAME_ERROR,
+} from '@constants/error.constants.js';
 
 interface AuthServiceInterface {
   // 유저 생성
@@ -32,7 +36,7 @@ export class AuthService implements AuthServiceInterface {
     });
 
     if (existingUserByEmail) {
-      throw new ConflictException('Email already exists');
+      throw new ConflictException(ALREADY_EXISTING_EMAIL_ERROR);
     }
 
     const existingUserByUsername = await this.mongoService.user.findUnique({
@@ -40,7 +44,7 @@ export class AuthService implements AuthServiceInterface {
     });
 
     if (existingUserByUsername) {
-      throw new ConflictException('Username already exists');
+      throw new ConflictException(ALREADY_EXISTING_NAME_ERROR);
     }
 
     const hashedPassword = await this.utilsService.hashPassword(password);

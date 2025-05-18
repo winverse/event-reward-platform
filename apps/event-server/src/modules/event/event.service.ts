@@ -12,15 +12,11 @@ import {
   EventType,
 } from '@packages/database';
 import { CreateEventDto, EventQueryDto } from './dto/index.js';
+import { EVENT_ERRORS } from '@constants/index.js';
 
 interface EventServiceInterface {
-  // 이벤트 조회
   findAll(query: EventQueryDto): Promise<Event[]>;
-
-  // 이벤트 조회
   findOne(id: string): Promise<Event>;
-
-  // 이벤트 생성
   create(createEventDto: CreateEventDto): Promise<Event>;
 }
 
@@ -52,14 +48,14 @@ export class EventService implements EventServiceInterface {
     });
 
     if (!event) {
-      throw new NotFoundException('찾을 수 없는 이벤트 입니다.');
+      throw new NotFoundException(EVENT_ERRORS.NOT_FOUND);
     }
     return event;
   }
 
   async create(createEventDto: CreateEventDto) {
     if (createEventDto.startDate >= createEventDto.endDate) {
-      throw new BadRequestException('시작일은 종료일보다 이전이어야 합니다');
+      throw new BadRequestException(EVENT_ERRORS.START_DATE_AFTER_END_DATE);
     }
 
     const now = new Date();
@@ -74,7 +70,7 @@ export class EventService implements EventServiceInterface {
     });
 
     if (existingEvent) {
-      throw new ConflictException('같은 이름의 이벤트가 이미 존재합니다');
+      throw new ConflictException(EVENT_ERRORS.DUPLICATE_NAME);
     }
 
     this.validateEventTypeAndCondition(createEventDto);
@@ -91,10 +87,9 @@ export class EventService implements EventServiceInterface {
   }
 
   private validateEventTypeAndCondition(event: CreateEventDto): void {
-    // 이벤트 타입이 GENERIC이 아닌데 조건이 없는 경우
     if (!event.conditions && event.eventType !== EventType.GENERIC) {
       throw new BadRequestException(
-        `${event.eventType} 이벤트 타입에는 조건이 필요합니다`,
+        `${event.eventType} ${EVENT_ERRORS.MISSING_CONDITIONS}`,
       );
     }
 
@@ -102,12 +97,11 @@ export class EventService implements EventServiceInterface {
       return;
     }
 
-    // 이벤트 타입별 조건 검증
     switch (event.eventType) {
       case EventType.DAILY_LOGIN:
         if (event.conditions.conditionKind !== 'dailyReset') {
           throw new BadRequestException(
-            '일일 로그인 이벤트에는 dailyReset 조건이 필요합니다',
+            EVENT_ERRORS.DAILY_LOGIN.INVALID_CONDITION,
           );
         }
         break;
@@ -115,7 +109,7 @@ export class EventService implements EventServiceInterface {
       case EventType.DAILY_TASK:
         if (event.conditions.conditionKind !== 'dailyReset') {
           throw new BadRequestException(
-            '일일 태스크 이벤트에는 dailyReset 조건이 필요합니다',
+            EVENT_ERRORS.DAILY_TASK.INVALID_CONDITION,
           );
         }
         break;
@@ -127,7 +121,7 @@ export class EventService implements EventServiceInterface {
 
         if (!hasItemCollectionTask) {
           throw new BadRequestException(
-            '아이템 수집 이벤트에는 최소 하나 이상의 itemCollection 태스크가 필요합니다',
+            EVENT_ERRORS.ITEM_COLLECTION.MISSING_TASK,
           );
         }
         break;
@@ -136,7 +130,7 @@ export class EventService implements EventServiceInterface {
         break;
 
       default:
-        throw new BadRequestException('지원되지 않는 이벤트 타입입니다');
+        throw new BadRequestException(EVENT_ERRORS.UNSUPPORTED_EVENT_TYPE);
     }
   }
 }

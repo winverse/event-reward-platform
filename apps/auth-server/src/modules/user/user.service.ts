@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { SafeUser } from '@packages/interface';
 import { MongoService } from '@packages/database';
 import { UpdateRoleDto } from '@modules/user/dto/index.js';
+import { NOT_FOUND_USER_ERROR } from '@constants/index.js';
 
 interface RoleServiceInterface {
   // 역할 변경
@@ -24,7 +25,7 @@ export class UserService implements RoleServiceInterface {
     });
 
     if (!user) {
-      throw new NotFoundException('NOT_FOUND_USER');
+      throw new NotFoundException(NOT_FOUND_USER_ERROR);
     }
 
     const updatedUser = await this.mongoService.user.update({

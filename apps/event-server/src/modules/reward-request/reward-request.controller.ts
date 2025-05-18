@@ -17,6 +17,7 @@ import { UserRole } from '@packages/database';
 import { Roles, RolesGuard } from '@packages/guards';
 import type { FastifyRequest } from 'fastify';
 import { format } from 'date-fns';
+import { REWARD_REQUEST_ERRORS } from '@constants/index.js';
 
 @UseGuards(JwtAuthGuard)
 @Controller({
@@ -36,7 +37,9 @@ export class RewardRequestController {
     const today = format(new Date(), 'yyyy-MM-dd');
 
     if (!req.user) {
-      throw new UnauthorizedException('Need to login first.');
+      throw new UnauthorizedException(
+        REWARD_REQUEST_ERRORS.AUTHENTICATION_REQUIRED,
+      );
     }
 
     return this.rewardRequestService.createRequest(
@@ -47,14 +50,16 @@ export class RewardRequestController {
   }
 
   // 유저가 자신의 보상 이력을 보는 API
-  @Get('/my-requests')
+  @Get('/me')
   @HttpCode(HttpStatus.OK)
   getMyRequests(
     @Req() req: FastifyRequest,
     @Query() query: RewardRequestQueryDto,
   ) {
     if (!req.user) {
-      throw new UnauthorizedException('Need to login first.');
+      throw new UnauthorizedException(
+        REWARD_REQUEST_ERRORS.AUTHENTICATION_REQUIRED,
+      );
     }
     return this.rewardRequestService.getUserRequests(req.user.id, query);
   }

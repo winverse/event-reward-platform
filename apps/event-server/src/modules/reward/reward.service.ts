@@ -1,17 +1,17 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { MongoService, Reward } from '@packages/database';
 import { CreateRewardsDto } from './dto/index.js';
+import { EVENT_ERRORS, REWARD_ERRORS } from '@constants/index.js';
 
 interface RewardServiceInterface {
   // 리워드 생성
   createMany(createRewardDto: CreateRewardsDto): Promise<void>;
-
   // 이벤트 별 리워드 조회
   findByEventId(eventId: string): Promise<Reward[]>;
-
   // 리워드 조회
   findOne(id: string): Promise<Reward>;
 }
+
 
 @Injectable()
 export class RewardService implements RewardServiceInterface {
@@ -24,7 +24,7 @@ export class RewardService implements RewardServiceInterface {
     });
 
     if (!event) {
-      throw new NotFoundException('Event not found');
+      throw new NotFoundException(EVENT_ERRORS.NOT_FOUND);
     }
 
     await this.mongoService.reward.createMany({
@@ -49,7 +49,7 @@ export class RewardService implements RewardServiceInterface {
     });
 
     if (!reward) {
-      throw new NotFoundException('Reward not found');
+      throw new NotFoundException(REWARD_ERRORS.NOT_FOUND);
     }
 
     return reward;

@@ -3,9 +3,7 @@ import {
   ConflictException,
   NotFoundException,
   BadRequestException,
-  Logger,
 } from '@nestjs/common';
-import { UtilsService } from '@packages/providers';
 import {
   MongoService,
   Prisma,
@@ -14,13 +12,15 @@ import {
 } from '@packages/database';
 import { CreateRewardRequestDto, RewardRequestQueryDto } from './dto/index.js';
 import {
+  EventConditions,
   ExchangeLimitConditions,
+  ItemCollectionTask,
   MapEntryTask,
   MonsterHuntTask,
-  ItemCollectionTask,
-  EventConditions,
   TaskType,
 } from '@packages/interface';
+import { REWARD_REQUEST_ERRORS } from '@constants/index.js';
+import { UtilsService } from '@packages/providers';
 
 interface RewardRequestServiceInterface {
   // 보상 요청
@@ -58,12 +58,12 @@ export class RewardRequestService implements RewardRequestServiceInterface {
     });
 
     if (!event) {
-      throw new NotFoundException('Event not found');
+      throw new NotFoundException(REWARD_REQUEST_ERRORS.EVENT_NOT_FOUND);
     }
 
     const now = new Date();
     if (now < event.startDate || now > event.endDate) {
-      throw new BadRequestException('Event is not active at this time');
+      throw new BadRequestException(REWARD_REQUEST_ERRORS.EVENT_NOT_ACTIVE);
     }
 
     const reward = await this.mongoService.reward.findFirst({
@@ -74,7 +74,7 @@ export class RewardRequestService implements RewardRequestServiceInterface {
     });
 
     if (!reward) {
-      throw new NotFoundException('Reward not found for this event');
+      throw new NotFoundException(REWARD_REQUEST_ERRORS.REWARD_NOT_FOUND);
     }
 
     // 보상 요청 제한 확인
@@ -87,7 +87,7 @@ export class RewardRequestService implements RewardRequestServiceInterface {
       today,
     );
 
-    // 각 조건에 맞게 되었는지 인게임 서버와 통신을 통해서 검증
+    // 각 조건에 맞게 되었는지 인게임 서버와 통신을 통해서 검
     const { status } = await this.verifyTaskConditions(conditions);
 
     return this.mongoService.userRewardRequest.create({
@@ -116,13 +116,13 @@ export class RewardRequestService implements RewardRequestServiceInterface {
     };
 
     const isExchangeLimit = this.hasExchangeLimit(conditions);
-    const limitCount = isExchangeLimit ? conditions.exchangeLimitPerAccount : 1; // 기본값: 하루 한 번 요청 가능
+    const limitCount = isExchangeLimit ? conditions.exchangeLimitPerAccount : 1;
     const where = isExchangeLimit
       ? baseWhere
       : { ...baseWhere, claimedDate: today };
     const errorMessage = isExchangeLimit
-      ? '이 보상에 대한 최대 요청 횟수에 도달했습니다'
-      : '이미 오늘 보상을 요청했습니다';
+      ? REWARD_REQUEST_ERRORS.EXCHANGE_LIMIT_REACHED
+      : REWARD_REQUEST_ERRORS.DAILY_LIMIT_REACHED;
 
     const approvedCount = await this.mongoService.userRewardRequest.count({
       where,
@@ -230,7 +230,7 @@ export class RewardRequestService implements RewardRequestServiceInterface {
       const isMapEntryTask = this.isMapEntryTask({ taskType });
       const isMonsterHuntTask = this.isMonsterHuntTask({ taskType });
       const isItemCollectionTask = this.isItemCollectionTask({ taskType });
-      const baseURI = 'https://nexon.com/api/v13/maple';
+      const baseURI = 'https://nexon.com/api/v22/maple'; // 22주년
 
       // 조건마다 인게임 서버 API 경로를 다르게 호출
       if (isMapEntryTask) {

@@ -28,13 +28,13 @@
         "src/providers/*"
       ],
       "@constants/*": [
-        "src/commons/constants/*"
+        "src/common/constants/*"
       ],
       "@filters/*": [
-        "src/commons/filters/*"
+        "src/common/filters/*"
       ],
       "@interfaces/*": [
-        "src/commons/interfaces/*"
+        "src/common/interfaces/*"
       ],
       "@modules/*": [
         "src/modules/*"

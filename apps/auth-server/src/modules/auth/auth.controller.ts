@@ -7,12 +7,12 @@ import {
   HttpCode,
   HttpStatus,
   NotFoundException,
-  Get,
 } from '@nestjs/common';
 import { AuthService } from './auth.service.js';
 import { CreateUserDto } from './dto/index.js';
-import { JwtAuthGuard, LocalAuthGuard } from '@packages/providers';
+import { LocalAuthGuard } from '@packages/providers';
 import type { FastifyRequest } from 'fastify';
+import { NOT_FOUND_USER_ERROR } from '@constants/index.js';
 
 @Controller({
   path: '/auth',
@@ -32,7 +32,7 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   async login(@Request() req: FastifyRequest) {
     if (!req.user) {
-      throw new NotFoundException('NOT_FOUND_USER');
+      throw new NotFoundException(NOT_FOUND_USER_ERROR);
     }
     return this.authService.login(req.user);
   }
