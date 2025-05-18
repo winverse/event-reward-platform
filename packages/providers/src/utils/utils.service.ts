@@ -16,4 +16,24 @@ export class UtilsService {
   public async sleep(ms: number) {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
+
+  public async fakeAxios<T>(url: string, ...args: any[]): Promise<{ data: T }> {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        try {
+          // 에러 확률 10%
+          this.randomlyThrowError(0.1, '네트워크 오류가 발생했습니다');
+          resolve({ data: { url, args } as T });
+        } catch (error) {
+          reject(error);
+        }
+      }, 50);
+    });
+  }
+
+  public randomlyThrowError(ratio: number, message: string) {
+    if (Math.random() < ratio) {
+      throw new Error(message);
+    }
+  }
 }

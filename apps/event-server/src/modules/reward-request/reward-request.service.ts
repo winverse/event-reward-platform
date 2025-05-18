@@ -3,6 +3,7 @@ import {
   ConflictException,
   NotFoundException,
   BadRequestException,
+  Logger,
 } from '@nestjs/common';
 import { UtilsService } from '@packages/providers';
 import {
@@ -42,6 +43,7 @@ interface RewardRequestServiceInterface {
 
 @Injectable()
 export class RewardRequestService implements RewardRequestServiceInterface {
+  private readonly logger = new Logger(RewardRequestService.name);
   constructor(
     private readonly mongoService: MongoService,
     private readonly utilsService: UtilsService,
@@ -77,51 +79,18 @@ export class RewardRequestService implements RewardRequestServiceInterface {
       throw new NotFoundException('Reward not found for this event');
     }
 
+    // 보상 요청 제한 확인
     const conditions = event.conditions as unknown as EventConditions;
-
-    // 제한이 있는 보상 요청에 대해서 요청 횟수를 체크
-    if (this.hasExchangeLimit(conditions)) {
-      const limitRequestCount = conditions.exchangeLimitPerAccount;
-      const approvedRequestCount =
-        await this.mongoService.userRewardRequest.count({
-          where: {
-            userId,
-            eventId: createDto.eventId,
-            rewardId: createDto.rewardId,
-            status: RequestStatus.APPROVED,
-          },
-        });
-
-      if (limitRequestCount <= approvedRequestCount) {
-        throw new ConflictException('Reward already requested today');
-      }
-    }
-
-    let isEligible = true;
-    let status: RequestStatus = RequestStatus.PENDING;
+    await this.checkRequestLimit(
+      userId,
+      createDto.eventId,
+      createDto.rewardId,
+      conditions,
+      today,
+    );
 
     // 각 조건에 맞게 되었는지 인게임 서버와 통신을 통해서 검증
-    for (const task of conditions.tasks) {
-      if (this.isDailyResetReward(event.conditions)) {
-        if (this.isMapEntryTask(task)) {
-          isEligible = await this.callExternalAPI(task.type);
-        } else if (this.isMonsterHuntTask(task)) {
-          isEligible = await this.callExternalAPI(task.type, task.targetCount);
-        }
-      }
-
-      if (this.isItemCollectionTask(task)) {
-        isEligible = await this.callExternalAPI(
-          task.type,
-          task.itemName,
-          task.itemQuantity,
-        );
-      }
-    }
-
-    if (!isEligible) {
-      status = RequestStatus.FAILED;
-    }
+    const { status } = await this.verifyTaskConditions(conditions);
 
     return this.mongoService.userRewardRequest.create({
       data: {
@@ -132,6 +101,62 @@ export class RewardRequestService implements RewardRequestServiceInterface {
         claimedDate: today,
       },
     });
+  }
+
+  private async checkRequestLimit(
+    userId: string,
+    eventId: string,
+    rewardId: string,
+    conditions: EventConditions,
+    today: string,
+  ): Promise<void> {
+    const baseWhere: Prisma.UserRewardRequestWhereInput = {
+      userId,
+      eventId,
+      rewardId,
+      status: RequestStatus.APPROVED,
+    };
+
+    const isExchangeLimit = this.hasExchangeLimit(conditions);
+    const limitCount = isExchangeLimit ? conditions.exchangeLimitPerAccount : 1; // 기본값: 하루 한 번 요청 가능
+    const where = isExchangeLimit
+      ? baseWhere
+      : { ...baseWhere, claimedDate: today };
+    const errorMessage = isExchangeLimit
+      ? '이 보상에 대한 최대 요청 횟수에 도달했습니다'
+      : '이미 오늘 보상을 요청했습니다';
+
+    const approvedCount = await this.mongoService.userRewardRequest.count({
+      where,
+    });
+
+    if (approvedCount >= limitCount) {
+      throw new ConflictException(errorMessage);
+    }
+  }
+
+  private async verifyTaskConditions(
+    conditions: EventConditions,
+  ): Promise<{ status: RequestStatus }> {
+    // 조건이 없는 이벤트인 경우
+    if (!conditions || !conditions.tasks || conditions.tasks.length === 0) {
+      return { status: RequestStatus.APPROVED };
+    }
+
+    // 태스크 유형에 따른 검증
+    const promises = conditions.tasks.map(({ type, ...rest }) =>
+      this.callExternalAPI(type, rest),
+    );
+
+    // 병렬 처리
+    const result = await Promise.allSettled(promises);
+    const isEligible = result.every(
+      (res) => res.status === 'fulfilled' && res.value,
+    );
+
+    return {
+      status: isEligible ? RequestStatus.PENDING : RequestStatus.FAILED,
+    };
   }
 
   async getUserRequests(userId: string, query: RewardRequestQueryDto) {
@@ -207,6 +232,45 @@ export class RewardRequestService implements RewardRequestServiceInterface {
     );
   }
 
+  private async callExternalAPI(
+    taskType: TaskType,
+    ...body: any[]
+  ): Promise<boolean> {
+    try {
+      const isMapEntryTask = this.isMapEntryTask({ taskType });
+      const isMonsterHuntTask = this.isMonsterHuntTask({ taskType });
+      const isItemCollectionTask = this.isItemCollectionTask({ taskType });
+
+      // 조건마다 인게임 서버 API 경로를 다르게 호출
+      if (isMapEntryTask) {
+        await this.utilsService.fakeAxios('https://nexon.com/mapEntry', {
+          method: 'GET',
+          data: body,
+        });
+        return true;
+      }
+
+      if (isMonsterHuntTask) {
+        await this.utilsService.fakeAxios('https://nexon.com/monster-hunt', {
+          method: 'GET',
+          data: body,
+        });
+        return true;
+      }
+
+      if (isItemCollectionTask) {
+        await this.utilsService.fakeAxios('https://nexon.com/item-collection', {
+          method: 'GET',
+          data: body,
+        });
+        return true;
+      }
+      return false;
+    } catch (error) {
+      return false;
+    }
+  }
+
   private isMapEntryTask(task: any): task is MapEntryTask {
     return task && typeof task === 'object' && task?.type === 'mapEntry';
   }
@@ -221,28 +285,5 @@ export class RewardRequestService implements RewardRequestServiceInterface {
 
   private isItemCollectionTask(task: any): task is ItemCollectionTask {
     return task && typeof task === 'object' && task?.type === 'itemCollection';
-  }
-
-  private async callExternalAPI(
-    taskType: TaskType,
-    ...body: any[]
-  ): Promise<boolean> {
-    try {
-      await this.utilsService.sleep(150);
-      this.randomlyThrowError(
-        0.1,
-        `${taskType} API call failed, Body: ${body}`,
-      );
-      console.log(`${taskType} API call succeeded`);
-      return true;
-    } catch (error) {
-      return false;
-    }
-  }
-
-  private randomlyThrowError(ratio: number, message: string) {
-    if (Math.random() < ratio) {
-      throw new Error(message);
-    }
   }
 }
