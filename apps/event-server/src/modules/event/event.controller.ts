@@ -21,9 +21,16 @@ import { RolesGuard, OperatorAccess } from '@packages/guards';
 export class EventController {
   constructor(private readonly eventService: EventService) {}
 
-  // 1. 운영자 또는 관리자, 이벤트 목록 조회
+  // 1. 운영자 또는 관리자, 이벤트 등록
   @UseGuards(JwtAuthGuard, RolesGuard)
   @OperatorAccess()
+  @Post('/')
+  @HttpCode(HttpStatus.CREATED)
+  create(@Body() createEventDto: CreateEventDto) {
+    return this.eventService.create(createEventDto);
+  }
+
+  // 2. 이벤트 목록 조회
   @Get('/')
   @HttpCode(HttpStatus.OK)
   findAll(@Query() query: EventQueryDto) {
@@ -36,14 +43,5 @@ export class EventController {
   @HttpCode(HttpStatus.OK)
   findOne(@Param('id') id: string) {
     return this.eventService.findOne(id);
-  }
-
-  // 3. 이벤트 등록
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @OperatorAccess()
-  @Post('/')
-  @HttpCode(HttpStatus.CREATED)
-  create(@Body() createEventDto: CreateEventDto) {
-    return this.eventService.create(createEventDto);
   }
 }

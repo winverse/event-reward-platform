@@ -163,6 +163,7 @@ export class RewardRequestService implements RewardRequestServiceInterface {
 
     const where: Prisma.UserRewardRequestWhereInput = {
       userId,
+      status: RequestStatus.APPROVED,
       ...(query.eventId ? { eventId: query.eventId } : {}),
       ...(query.status ? { status: query.status } : {}),
     };
@@ -230,7 +231,7 @@ export class RewardRequestService implements RewardRequestServiceInterface {
       const isMapEntryTask = this.isMapEntryTask({ taskType });
       const isMonsterHuntTask = this.isMonsterHuntTask({ taskType });
       const isItemCollectionTask = this.isItemCollectionTask({ taskType });
-      const baseURI = 'https://nexon.com/api/v22/maple'; // 22주년
+      const baseURI = 'https://nexon.com/maple/api/v22/'; // 22주년
 
       // 조건마다 인게임 서버 API 경로를 다르게 호출
       if (isMapEntryTask) {
@@ -256,16 +257,19 @@ export class RewardRequestService implements RewardRequestServiceInterface {
         });
         return true;
       }
+
       return false;
     } catch (error) {
       return false;
     }
   }
 
+  // 타입 가드
   private isMapEntryTask(task: any): task is MapEntryTask {
     return task && typeof task === 'object' && task?.type === 'mapEntry';
   }
 
+  // 타입 가드
   private isMonsterHuntTask(task: any): task is MonsterHuntTask {
     return (
       task &&
@@ -274,6 +278,7 @@ export class RewardRequestService implements RewardRequestServiceInterface {
     );
   }
 
+  // 타입 가드
   private isItemCollectionTask(task: any): task is ItemCollectionTask {
     return task && typeof task === 'object' && task?.type === 'itemCollection';
   }

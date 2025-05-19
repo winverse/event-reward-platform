@@ -1,0 +1,11 @@
+services:
+  server:
+    container_name: auth-server-container
+    build:
+      context: ../../
+      dockerfile: ./apps/auth-server/Dockerfile
+      no_cache: true
+    tty: true
+    stdin_open: true
+    ports:
+      - "5001:5001"
