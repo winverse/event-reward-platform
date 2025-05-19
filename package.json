@@ -8,12 +8,17 @@
   "type": "module",
   "scripts": {
     "build": "turbo run build",
-    "dev": "turbo run dev",
+    "dev:up": "bash ./scripts/docker-compose-dev-up.sh && turbo build && turbo run dev",
+    "dev:down": "bash ./scripts/docker-compose-dev-down.sh",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "check-types": "turbo run check-types",
-    "prisma:init": "pnpm --filter=@packages/database generate:prisma",
+    "prisma:init": "pnpm prisma:schema && pnpm prisma:push",
+    "prisma:schema": "pnpm --filter=@packages/database generate:prisma",
+    "prisma:push": "pnpm --filter=@packages/database db:push",
     "prisma:seed": "pnpm --filter=@packages/database generate:seed",
+    "prod:up": "bash ./scripts/docker-compose-up.sh",
+    "prod:down": "bash ./scripts/docker-compose-down.sh",
     "clean": "shx rm -rf ./node_modules ./apps/*/node_modules ./packages/*/node_modules ./apps/*/dist ./packages/*/dist"
   },
   "devDependencies": {
@@ -27,8 +32,8 @@
     "typescript": "5.8.3"
   },
   "engines": {
-    "node": "18",
-    "pnpm": ">=10",
+    "node": ">=18.20.8",
+    "pnpm": ">=8",
     "npm": "please-use-pnpm",
     "yarn": "please-use-pnpm"
   },

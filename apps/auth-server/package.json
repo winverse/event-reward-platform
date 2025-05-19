@@ -7,7 +7,7 @@
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "dev": "cross-env NODE_ENV=development nest start -b swc -w",
-    "prod": "node dist/main",
+    "prod": "NODE_ENV=production node dist/main",
     "start:debug": "nest start --debug --watch",
     "lint": "eslint \"{src,apps,libs}/**/*.ts\" --fix",
     "test": "jest",

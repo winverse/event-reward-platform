@@ -11,7 +11,7 @@ ENV PATH="$PNPM_HOME:$PATH"
 RUN pnpm add -g turbo
 RUN turbo telemetry disable
 
-ENV APP_NAME="auth-server"
+ENV APP_NAME="gateway-server"
 ENV APP_DIR="apps/${APP_NAME}"
 RUN echo "APP_DIR value is: /${APP_DIR}"
 
@@ -46,6 +46,6 @@ COPY --from=builder /app/${APP_DIR}/*.json .
 
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --prod --frozen-lockfile
 
-EXPOSE 5002
+EXPOSE 5001
 
 CMD [ "pnpm", "prod" ]

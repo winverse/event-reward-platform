@@ -1,14 +1,14 @@
 services:
-  auth-server:
-    container_name: auth-server-container
+  event-server:
+    container_name: event-server-container
     build:
       context: ../../
-      dockerfile: ./apps/auth-server/Dockerfile
+      dockerfile: ./apps/event-server/Dockerfile
       no_cache: true
     tty: true
     stdin_open: true
     ports:
-      - "5002:5002"
+      - "5003:5003"
     environment:
       - NODE_ENV=production
     env_file:

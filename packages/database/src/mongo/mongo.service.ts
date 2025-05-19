@@ -16,12 +16,14 @@ export class MongoService
 
   constructor(config: ConfigService) {
     const dbUrl = config.get('db.database_url');
+    console.log('MONGO SERVICE CONSTRUCTOR - DATABASE_URL:', dbUrl);
     super({
       datasources: {
         db: {
           url: dbUrl,
         },
       },
+      log: ['query', 'info', 'warn', 'error'],
     });
     this.dbUrl = dbUrl;
   }
@@ -29,6 +31,7 @@ export class MongoService
   async onModuleInit() {
     try {
       await this.$connect();
+      console.log('MongoDB에 연결 시도 중...');
       await this.$runCommandRaw({
         connectionStatus: true,
         showPrivileges: true,

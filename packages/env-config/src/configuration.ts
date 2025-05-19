@@ -5,7 +5,7 @@ import { Config, Environment } from './config.interface.js';
 import { validateConfig } from './config.validator.js';
 
 export const configuration = (): Config => {
-  const environment = process.env.NODE_ENV || 'development';
+  const environment = process.env.NODE_ENV || 'production';
   const filename = `.env.${environment}`;
 
   const envFilePath = path.resolve(process.cwd(), '..', '..', 'env', filename);
