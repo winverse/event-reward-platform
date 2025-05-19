@@ -8,8 +8,7 @@
   "type": "module",
   "scripts": {
     "build": "turbo run build",
-    "dev:up": "bash ./scripts/docker-compose-dev-up.sh && turbo build && turbo run dev",
-    "dev:down": "bash ./scripts/docker-compose-dev-down.sh",
+    "dev": "turbo build && turbo run dev",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "check-types": "turbo run check-types",
