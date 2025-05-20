@@ -72,8 +72,28 @@ MongoDB와의 연동을 위해 Prisma ORM을 사용했습니다:
 - **관계 관리**: 이벤트-보상, 유저-이벤트 참여 등의 관계를 직관적으로 관리할 수 있습니다.
 - [MongoService](../packages/database/src/mongo/mongo.service.ts) 클래스를 통해 Prisma 클라이언트를 확장하고, NestJS 라이프사이클에 통합했습니다
 
+## 5. 스키마 구조
 
-## 5. 아쉬운 점
+이벤트 리워드 플랫폼의 데이터 모델링은 다음과 같이 구성했습니다:
+### 주요 모델
+- **User**: 사용자 정보 및 권한 관리
+  - 역할 기반 접근 제어(USER, OPERATOR, AUDITOR, ADMIN)
+  - 보상 요청 내역과 인증 토큰 관리
+
+- : 이벤트 정보 관리 **Event**
+  - 다양한 이벤트 유형(GENERIC, DAILY_LOGIN, DAILY_TASK, ITEM_COLLECTION)
+  - 이벤트 상태(ACTIVE, INACTIVE, ENDED) 관리
+  - 조건 정보는 Json 필드로 유연하게 저장
+
+- **Reward**: 보상 정보 관리
+  - 이벤트에 연결된 보상 아이템 정보
+  - 누적형 이벤트를 위한 순서 필드(rewardOrder) 지원
+
+- **UserRewardRequest**: 사용자 보상 요청 관리
+  - 보상 처리 상태(PENDING, FAILED, APPROVED) 추적
+  - 일별 중복 요청 방지를 위한 claimedDate 필드
+
+## 6. 아쉬운 점
 
 - NestJS를 선택하는 여러 이유 중에 한 가지는, 역할과 책임을 각기 다른 모듈별로 분리하기 용이 하고, 이를 통해서 메소드가 하나의 역할만을 한다면, 이는 테스트 코드를 작성하기에 매우 용이한 코드가 될 것 입니다. 실제로도 항상 테스트를 염두해두고 코드를 작성하는데 ([파일](../apps/event-server/src/modules/reward-request/reward-request.controller.ts) 참고) 역량이 부족하여 테스트 코드를 작성하지 못 하였습니다.
 - 그 외에도 하고 싶었으나 하지 못한 리스트를 적어 드립니다.
