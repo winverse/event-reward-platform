@@ -60,7 +60,14 @@
 
 ```
 
-# 2. Create Schema
+# 2. dependency install
+```bash
+   # node 18.20.8 (LTS)
+   # pnpm >= 8
+   pnpm install
+```
+
+# 3. Create Schema
 ```
    # 최상단에서 경로에서 실행 해줍니다.
    pnpm prisma:init
@@ -72,7 +79,7 @@
   
 - 2. 스키마 관련 타입 생성
 
-# 3. Generate Seed (필요한 경우)
+# 4. Generate Seed (필요한 경우)
 
 ```bash
     cd /packages/database
@@ -84,7 +91,7 @@
 - ![이미지](./document/images/generate-seed/user.png)
 - ![이미지](./document/images/generate-seed/event.png)
 
-# 4. 어플리케이션 실행 
+# 5. 어플리케이션 실행 
 
 ## 1. Dev 환경 실행
 
@@ -115,5 +122,3 @@
 - ![이미지](./document/images/pnpm-prod/result-gateway.png)
 - ![이미지](./document/images/pnpm-prod/result-auth.png)
 - ![이미지](./document/images/pnpm-prod/result-event.png)
-
-##
