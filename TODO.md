@@ -30,22 +30,22 @@
 - [x] Event Server 생성 (핵심 이벤트 및 보상 로직)
   - [x] 이벤트 및 보상 스키마/엔티티 정의 (MongoDB)
   - [x] 이벤트 생성 및 조회 API 구현 (운영자/관리자 역할)
-  - [ ] 이벤트 보상 등록 / 조회
-  - [ ] 유저 보상 요청
-  - [ ] role 별 보상 요청 내역 확인 (본인 or 운영자/감시자/관리자)
+  - [X] 이벤트 보상 등록 / 조회
+  - [x] 유저 보상 요청
+  - [x] role 별 보상 요청 내역 확인 (본인 or 운영자/감시자/관리자)
 - [x] Event Server와 Gateway 연동
   - [x] Gateway에 Event Server API 라우팅 규칙 및 역할 기반 인가(Authorization) 추가
 
 ## 4. User Interaction with Events (사용자 이벤트 참여 기능)
 
-- [ ] 사용자 보상 요청 및 이력 조회 기능 (Event Server)
-  - [ ] 사용자 보상 요청 API 구현 (조건 검증, 중복 요청 방지)
-  - [ ] 사용자/관리자 보상 이력 조회 API 구현
-- [ ] 사용자 상호작용 API와 Gateway 연동
+- [x] 사용자 보상 요청 및 이력 조회 기능 (Event Server)
+  - [x] 사용자 보상 요청 API 구현 (조건 검증, 중복 요청 방지)
+  - [x] 사용자/관리자 보상 이력 조회 API 구현
+- [x] 사용자 상호작용 API와 Gateway 연동
 
 ## 5. Final (마무리)
 
 - [ ] API Documentation
-- [ ] README.md 개선 (실행 방법, 설계 이유, API 명세 등)
+- [x] README.md 개선 (실행 방법, 설계 이유, API 명세 등)
 - [ ] Testing
 - [ ] API limit (API 호출 제한 - Gateway에서 Rate Limiting)

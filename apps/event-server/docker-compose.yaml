@@ -14,9 +14,9 @@ services:
     env_file:
       - ../.././env/.env.production
     restart: on-failure
-    networks:
-      - app-network
-
-networks:
-  app-network:
-    external: true
+#    networks:
+#      - app-network
+#
+#networks:
+#  app-network:
+#    external: true
